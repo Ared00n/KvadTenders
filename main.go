@@ -132,20 +132,26 @@ func validateDirectories(config *Config) error {
 }
 
 func main() {
+	log.Println("=== Kvadrat Website Starting ===")
+	
 	// Get configuration
 	config := getConfig()
+	log.Printf("Port configuration: %s", config.Port)
 	
 	// Validate required directories
 	if err := validateDirectories(config); err != nil {
 		log.Fatalf("Configuration validation failed: %v", err)
 	}
+	log.Println("Directories validated successfully")
 	
 	// Create server instance
 	server, err := NewServer(config)
 	if err != nil {
 		log.Fatalf("Failed to create server: %v", err)
 	}
+	log.Println("Server instance created successfully")
 	
 	// Start server
+	log.Printf("Starting server on port %s", config.Port)
 	log.Fatal(server.Start())
 }
