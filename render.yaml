@@ -1,9 +1,0 @@
-services:
-  - type: web
-    name: kvadtenders
-    runtime: go
-    buildCommand: go build -tags netgo -ldflags '-w -extldflags "-static"' -o bin/main .
-    startCommand: ./bin/main
-    envVars:
-      - key: PORT
-        sync: false

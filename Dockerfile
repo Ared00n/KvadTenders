@@ -2,10 +2,16 @@
 FROM golang:1.21-alpine AS builder
 
 WORKDIR /app
-COPY go.mod ./
+
+# Copy go mod files first for better caching
+COPY go.mod go.sum* ./
+RUN go mod download
+
+# Copy source code
 COPY . .
 
-RUN go build -o main .
+# Build the application
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 
 # Runtime stage
 FROM alpine:latest
