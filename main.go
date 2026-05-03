@@ -76,6 +76,37 @@ func main() {
 		fmt.Fprint(w, `{"status":"ok","service":"kvadrat-website"}`)
 	})
 	
+	// Debug endpoint
+	http.HandleFunc("/debug", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+		fmt.Fprintf(w, "Working Directory: %s\n", getCurrentDir())
+		fmt.Fprintf(w, "Port: %s\n", port)
+		
+		// Check templates
+		if _, err := os.Stat("templates"); err == nil {
+			fmt.Fprintln(w, "✓ templates/ directory exists")
+			if _, err := os.Stat("templates/index.html"); err == nil {
+				fmt.Fprintln(w, "✓ templates/index.html exists")
+			} else {
+				fmt.Fprintln(w, "✗ templates/index.html NOT found")
+			}
+		} else {
+			fmt.Fprintln(w, "✗ templates/ directory NOT found")
+		}
+		
+		// Check static
+		if _, err := os.Stat("static"); err == nil {
+			fmt.Fprintln(w, "✓ static/ directory exists")
+			if _, err := os.Stat("static/style.css"); err == nil {
+				fmt.Fprintln(w, "✓ static/style.css exists")
+			} else {
+				fmt.Fprintln(w, "✗ static/style.css NOT found")
+			}
+		} else {
+			fmt.Fprintln(w, "✗ static/ directory NOT found")
+		}
+	})
+	
 	log.Printf("Server starting on http://0.0.0.0:%s", port)
 	log.Println("Routes configured: /, /health, /static/*")
 	
