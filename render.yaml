@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: kvadrat-website
+    env: go
+    buildCommand: go build -o main main.go
+    startCommand: ./main
+    envVars:
+      - key: PORT
+        sync: false
