@@ -103,8 +103,11 @@ func (s *Server) Start() error {
 func getConfig() *Config {
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = ":8080"
-	} else if port[0] != ':' {
+		port = "8080"
+	}
+	
+	// Render передает порт без двоеточия, добавляем его
+	if port[0] != ':' {
 		port = ":" + port
 	}
 
